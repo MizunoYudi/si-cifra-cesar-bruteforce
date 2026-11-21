@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "build": "tsoa spec-and-routes && tsx",
+    "build": "tsoa spec-and-routes && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx watch src/index.ts"
+    "start": "tsoa spec-and-routes && tsx watch src/index.ts"
   },
   "keywords": [],
   "author": "",

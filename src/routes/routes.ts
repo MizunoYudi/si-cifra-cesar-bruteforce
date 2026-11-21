@@ -5,7 +5,7 @@ import type { TsoaRoute } from '@tsoa/runtime';
 import { fetchMiddlewares } from '@tsoa/runtime';
 import { ExpressTemplateService } from '@tsoa/runtime/express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TesteControler } from './../controller/TesteController';
+import { CifraCesarController } from './../controller/CifraCesarController';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
 
@@ -13,6 +13,23 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "CifrarRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "textoClaro": {"dataType":"string","required":true},
+            "deslocamento": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CifrarResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "textoCifrado": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
@@ -30,24 +47,27 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsTesteControler_teste: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCifraCesarController_cifrar: Record<string, TsoaRoute.ParameterSchema> = {
+                dto: {"in":"body","name":"dto","required":true,"ref":"CifrarRequest"},
+                success: {"in":"res","name":"200","required":true,"ref":"CifrarResponse"},
+                fail: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"erro":{"dataType":"string","required":true}}},
         };
-        app.get('/teste',
-            ...(fetchMiddlewares<RequestHandler>(TesteControler)),
-            ...(fetchMiddlewares<RequestHandler>(TesteControler.prototype.teste)),
+        app.post('/cifrar',
+            ...(fetchMiddlewares<RequestHandler>(CifraCesarController)),
+            ...(fetchMiddlewares<RequestHandler>(CifraCesarController.prototype.cifrar)),
 
-            async function TesteControler_teste(request: ExRequest, response: ExResponse, next: any) {
+            async function CifraCesarController_cifrar(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsTesteControler_teste, request, response, next });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCifraCesarController_cifrar, request, response, next });
 
-                const controller = new TesteControler();
+                const controller = new CifraCesarController();
 
               await templateService.apiHandler({
-                methodName: 'teste',
+                methodName: 'cifrar',
                 controller,
                 response,
                 next,

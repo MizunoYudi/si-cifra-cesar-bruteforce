@@ -6,7 +6,37 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"CifrarRequest": {
+				"properties": {
+					"textoClaro": {
+						"type": "string"
+					},
+					"deslocamento": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"textoClaro",
+					"deslocamento"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CifrarResponse": {
+				"properties": {
+					"textoCifrado": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"textoCifrado"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -18,26 +48,54 @@
 		"contact": {}
 	},
 	"paths": {
-		"/teste": {
-			"get": {
-				"operationId": "Teste",
+		"/cifrar": {
+			"post": {
+				"operationId": "Cifrar",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"$ref": "#/components/schemas/CifrarResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"erro": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"erro"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Teste"
+					"default"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CifrarRequest"
+							}
+						}
+					}
+				}
 			}
 		}
 	},
