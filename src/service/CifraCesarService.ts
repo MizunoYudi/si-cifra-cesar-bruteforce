@@ -1,4 +1,4 @@
-import { PYTHONPROBR, Word } from "@andsfonseca/palavras-pt-br";
+import { BRISPELL, PYTHONPROBR, Word } from "@andsfonseca/palavras-pt-br";
 import { CifrarRequest } from "../model/dto/CifrarRequest";
 import { CifrarResponse } from "../model/dto/CifrarResponse";
 import { DecifrarForcaBrutaRequest } from "../model/dto/DecifrarForcaBrutaRequest";
@@ -97,7 +97,7 @@ export class CifraCesarService {
     }
 
     private avaliarProximidade(textoCifrado: string): number {
-        Word.library = PYTHONPROBR;
+        Word.library = BRISPELL;
         const palavrasTextoCifrado: string[] = textoCifrado.split(" ");
         const palavrasProximas: string[] = [];
         for (let i of palavrasTextoCifrado){
