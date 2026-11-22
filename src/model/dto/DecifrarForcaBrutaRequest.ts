@@ -1,4 +1,4 @@
-export class DecifrarRequest {
+export class DecifrarForcaBrutaRequest {
     public textoCifrado: string;
 
     constructor(textoCifrado: string) {

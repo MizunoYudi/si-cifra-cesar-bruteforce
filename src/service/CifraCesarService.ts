@@ -26,6 +26,8 @@ export class CifraCesarService {
         return new DecifrarResponse(textoCifrado);
     }
 
+    public decifrarForcaBruta(data: DecifrarForca)
+
     private aplicarCifraCesar(textoClaro: string, deslocamento: number): string {
         this.verificarMensagemValida(textoClaro);
         const textoClaroArray = textoClaro.split("");
