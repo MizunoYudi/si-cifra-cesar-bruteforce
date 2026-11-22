@@ -47,6 +47,22 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DecifrarForcaBrutaRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "textoCifrado": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DecifrarForcaBrutaResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "textoClaro": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
@@ -117,6 +133,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'decifrar',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsCifraCesarController_decifrarForcaBruta: Record<string, TsoaRoute.ParameterSchema> = {
+                dto: {"in":"body","name":"dto","required":true,"ref":"DecifrarForcaBrutaRequest"},
+                success: {"in":"res","name":"200","required":true,"ref":"DecifrarForcaBrutaResponse"},
+                fail: {"in":"res","name":"400","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"erro":{"dataType":"string","required":true}}},
+        };
+        app.post('/decifrarForcaBruta',
+            ...(fetchMiddlewares<RequestHandler>(CifraCesarController)),
+            ...(fetchMiddlewares<RequestHandler>(CifraCesarController.prototype.decifrarForcaBruta)),
+
+            async function CifraCesarController_decifrarForcaBruta(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsCifraCesarController_decifrarForcaBruta, request, response, next });
+
+                const controller = new CifraCesarController();
+
+              await templateService.apiHandler({
+                methodName: 'decifrarForcaBruta',
                 controller,
                 response,
                 next,

@@ -4,6 +4,8 @@ import { CifrarResponse } from "../model/dto/CifrarResponse";
 import { CifraCesarService } from "../service/CifraCesarService";
 import { DecifrarRequest } from "../model/dto/DecifrarRequest";
 import { DecifrarResponse } from "../model/dto/DecifrarResponse";
+import { DecifrarForcaBrutaRequest } from "../model/dto/DecifrarForcaBrutaRequest";
+import { DecifrarForcaBrutaResponse } from "../model/dto/DecifrarForcaBrutaResponse";
 
 @Route("")
 @Tags("default")
@@ -35,6 +37,21 @@ export class CifraCesarController {
             const decifrarResponse = this.cifraCesarService.decifrar(dto);
             return success(200, decifrarResponse);
         } catch (error: any) {
+            return fail(400, { erro: error.message });
+        }
+    }
+    
+    @Post("/decifrarForcaBruta")
+    async decifrarForcaBruta(
+        @Body() dto: DecifrarForcaBrutaRequest,
+        @Res() success: TsoaResponse<200, DecifrarForcaBrutaResponse>,
+        @Res() fail: TsoaResponse<400, { erro: string }>
+    ) {
+        try {
+            const decifrarForcaBrutaResponse = this.cifraCesarService.decifrarForcaBruta(dto);
+            return success(200, decifrarForcaBrutaResponse);
+        } catch (error: any) {
+            console.log(error);
             return fail(400, { erro: error.message });
         }
     }

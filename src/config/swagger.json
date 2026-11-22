@@ -64,6 +64,30 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"DecifrarForcaBrutaRequest": {
+				"properties": {
+					"textoCifrado": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"textoCifrado"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DecifrarForcaBrutaResponse": {
+				"properties": {
+					"textoClaro": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"textoClaro"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -171,6 +195,56 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/DecifrarRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/decifrarForcaBruta": {
+			"post": {
+				"operationId": "DecifrarForcaBruta",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DecifrarForcaBrutaResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"erro": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"erro"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"default"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DecifrarForcaBrutaRequest"
 							}
 						}
 					}

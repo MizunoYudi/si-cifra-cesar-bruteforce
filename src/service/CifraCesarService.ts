@@ -1,7 +1,11 @@
+import { PYTHONPROBR, Word } from "@andsfonseca/palavras-pt-br";
 import { CifrarRequest } from "../model/dto/CifrarRequest";
 import { CifrarResponse } from "../model/dto/CifrarResponse";
+import { DecifrarForcaBrutaRequest } from "../model/dto/DecifrarForcaBrutaRequest";
+import { DecifrarForcaBrutaResponse } from "../model/dto/DecifrarForcaBrutaResponse";
 import { DecifrarRequest } from "../model/dto/DecifrarRequest";
-import { DecifrarResponse } from "../model/dto/DecifrarResponse";
+import { DecifrarResponse } from "../model/dto/DecifrarResponse";import { ProximidadeTextoCifrado } from "../model/entity/ProximidadeTextoCifrado";
+;
 
 export class CifraCesarService {
     public cifrar(data: CifrarRequest): CifrarResponse {
@@ -26,7 +30,12 @@ export class CifraCesarService {
         return new DecifrarResponse(textoCifrado);
     }
 
-    public decifrarForcaBruta(data: DecifrarForca)
+    public decifrarForcaBruta(data: DecifrarForcaBrutaRequest): DecifrarForcaBrutaResponse {
+        if (!data.textoCifrado)
+            throw new Error('Entrada invalida: Texto cifrado esta vazio');
+        const textoDecifrado = this.aplicarCifraCesarForcaBruta(data.textoCifrado);
+        return new DecifrarForcaBrutaResponse(textoDecifrado);
+    }
 
     private aplicarCifraCesar(textoClaro: string, deslocamento: number): string {
         this.verificarMensagemValida(textoClaro);
@@ -50,17 +59,61 @@ export class CifraCesarService {
     }
 
     private deslocar(caracter: string, deslocamento: number): string {
-        const valorUnicode = caracter.charCodeAt(0)
+        const valorUnicode = caracter.charCodeAt(0);
+        let base: number;
         if (valorUnicode == 32)
-            return String.fromCharCode(valorUnicode);
-        if (valorUnicode >= 65 && valorUnicode <= 90) {
-            if ((valorUnicode + deslocamento % 26) > 90)
-                return String.fromCharCode(65 + (90 - valorUnicode) + deslocamento % 26 - 1);
+            return caracter;
+        if (valorUnicode >= 65 && valorUnicode <= 90)
+            base = 65;
+        else
+            base = 97;
+        const posicao = valorUnicode - base;
+        const novaPosicao = (((posicao + deslocamento) % 26) + 26) % 26;
+        return String.fromCharCode(base + novaPosicao);
+    }
+
+    private aplicarCifraCesarForcaBruta(textoClaro: string): string {
+        this.verificarMensagemValida(textoClaro);
+        const todasPossibilidadesCifra = this.obterTodasPossibilidadesCifraCesar(textoClaro);
+        return this.obterPossibilidadeMaisProxima(todasPossibilidadesCifra);
+    }
+
+    private obterTodasPossibilidadesCifraCesar(textoClaro: string): string[] {
+        const todasPossibilidades = [];
+        for (let i = 1; i < 26; i++)
+            todasPossibilidades.push(this.aplicarCifraCesar(textoClaro, i));
+        return todasPossibilidades;
+    }
+
+    private obterPossibilidadeMaisProxima(textosCifrados: string[]): string {
+        const proximidades: ProximidadeTextoCifrado[] = [];
+        for (let i = 0; i < 25; i++)
+            proximidades.push(new ProximidadeTextoCifrado(
+                i,
+                this.avaliarProximidade(textosCifrados[i]),
+                textosCifrados[i])
+            );
+        return this.proximidadeMaior(proximidades);
+    }
+
+    private avaliarProximidade(textoCifrado: string): number {
+        Word.library = PYTHONPROBR;
+        const palavrasTextoCifrado: string[] = textoCifrado.split(" ");
+        const palavrasProximas: string[] = [];
+        for (let i of palavrasTextoCifrado){
+            if (Word.checkValid(i.toLocaleLowerCase(), 0, true))
+                palavrasProximas.push(i);
         }
-        if (valorUnicode >= 90 && valorUnicode <= 122) {
-            if ((valorUnicode + deslocamento % 26) > 122)
-                return String.fromCharCode(97 + (122 - valorUnicode) + deslocamento % 26 - 1);
-        }
-        return String.fromCharCode(valorUnicode + deslocamento % 26);
+        return palavrasProximas.length;
+    }
+
+    private proximidadeMaior(proximidades: ProximidadeTextoCifrado[]): string {
+        let proximidadeMaior: ProximidadeTextoCifrado = proximidades[0];
+        for (let i of proximidades)
+            if (i.pontuacao > proximidadeMaior.pontuacao)
+                proximidadeMaior = i;
+        if(!(proximidadeMaior.pontuacao > 0))
+            throw new Error("Nao foi possivel encontrar nenhuma mensagem clara em Portugues Brasileiro")
+        return proximidadeMaior.texto;
     }
 }
