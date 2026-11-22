@@ -31,6 +31,11 @@ Não é permitido inserir números, acentos ou caracteres especiais, se for envi
 
 **Força bruta:** o texto cifrado é deslocado de 1 a 25 posições. Cada possibilidade de mensagem recebe uma pontuação igual ao número de palavras encontradas no dicionário de português brasileiro. A possibilidade com maior pontuação é retornado. Se nenhuma possibilidade tiver palavra válida, a API retorna erro.
 
+```
+Como esse método envolve comparar TODAS as possibilidades com o dicionário, isso acaba deixando o processo de decifrar por força bruta mais lento, principalmente se for utilizado a API remota
+```
+
+
 ## Como utilizar
 
 A API pode ser utilizada de forma:
