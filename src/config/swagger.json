@@ -35,6 +35,35 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"DecifrarRequest": {
+				"properties": {
+					"textoCifrado": {
+						"type": "string"
+					},
+					"deslocamento": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"textoCifrado",
+					"deslocamento"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DecifrarResponse": {
+				"properties": {
+					"textoClaro": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"textoClaro"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -92,6 +121,56 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/CifrarRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/decifrar": {
+			"post": {
+				"operationId": "Decifrar",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DecifrarResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"erro": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"erro"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"default"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DecifrarRequest"
 							}
 						}
 					}
